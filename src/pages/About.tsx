@@ -1,9 +1,10 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { 
   Award, Shield, Users, Clock, Star, CheckCircle, 
-  Phone, Zap, Calendar 
+  Phone, Zap, Calendar, Sparkles 
 } from 'lucide-react';
+
 
 const About = () => {
   const certifications = [
@@ -45,27 +46,28 @@ const About = () => {
   ];
 
   return (
-    <div className="pt-16">
+    <div className="min-h-screen bg-[#111111] text-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About PowerPro Electric
-            </h1>
-            <p className="text-xl text-blue-200 max-w-3xl mx-auto">
-              Your trusted local electricians, providing professional electrical services 
-              to residential and commercial customers since 2010.
-            </p>
+      <section className="pt-32 pb-16 bg-gradient-to-br from-black via-blue-950/20 to-black relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.15] backdrop-blur-sm mb-6">
+            <Sparkles className="h-4 w-4 text-yellow-300 animate-spin-slow" />
+            <span className="text-sm font-medium text-white/80">About PowerPro Electric</span>
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
           </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+            Your Trusted Local Electricians
+          </h1>
+          <p className="text-xl sm:text-2xl text-white/60 max-w-3xl mx-auto leading-relaxed mb-10">
+            Providing professional electrical services to residential and commercial customers since 2010.
+          </p>
+          <div className="flex flex-wrap justify-center gap-6 mb-10 md:mb-16">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+              <div key={index} className="flex flex-col items-center justify-center w-40 h-32 bg-white/[0.05] backdrop-blur-xl rounded-2xl border border-white/[0.15] group hover:bg-white/[0.08] transition-all shadow-md">
+                <div className="text-3xl font-bold text-yellow-300 mb-1">
                   {stat.number}
                 </div>
-                <div className="text-blue-200 text-sm md:text-base">
+                <div className="text-white/60 text-sm">
                   {stat.label}
                 </div>
               </div>

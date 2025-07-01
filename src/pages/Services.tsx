@@ -4,6 +4,7 @@ import {
   Phone, AlertTriangle, Home as HomeIcon, Building, 
   Lightbulb, Zap, Shield, CheckCircle, Clock 
 } from 'lucide-react';
+import PremiumElectricalContact from '../components/ui/component';
 
 const Services = () => {
   const emergencyServices = [
@@ -91,18 +92,22 @@ const Services = () => {
   ];
 
   return (
-    <div className="pt-16">
+    <div className="min-h-screen bg-[#111111] text-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-16">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-black via-blue-950/20 to-black relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.15] backdrop-blur-sm mb-6">
+            <Zap className="h-4 w-4 text-yellow-300 animate-spin-slow" />
+            <span className="text-sm font-medium text-white/80">Our Services</span>
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+          </div>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
             Professional Electrical Services
           </h1>
-          <p className="text-xl text-blue-200 mb-8 max-w-3xl mx-auto">
-            From emergency repairs to complete electrical installations, 
-            our licensed electricians provide reliable service you can trust.
+          <p className="text-xl sm:text-2xl text-white/60 max-w-3xl mx-auto leading-relaxed mb-10">
+            From emergency repairs to complete electrical installations, our licensed electricians provide reliable service you can trust.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
             <a
               href="tel:+15551234567"
               className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"

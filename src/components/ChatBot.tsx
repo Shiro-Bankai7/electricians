@@ -1,239 +1,327 @@
-import React, { useState } from 'react';
-import { MessageCircle, X, Phone, Clock, AlertTriangle, Send } from 'lucide-react';
+"use client";
 
-const ChatBot = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Send, Sparkles, X, Loader2, MessageCircle, Phone, Minimize2, Maximize2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface Message {
+  id: string;
+  text: string;
+  isUser: boolean;
+  timestamp: Date;
+}
+
+interface MillionDollarChatbotProps {
+  companyName?: string;
+  emergencyPhone?: string;
+  initialMessage?: string;
+  className?: string;
+}
+
+const MillionDollarChatbot = ({
+  companyName = "PowerPro Electric",
+  emergencyPhone = "(555) 123-4567",
+  initialMessage = "Hi! I'm here to help with your electrical needs. What can I assist you with today?",
+  className = ""
+}: MillionDollarChatbotProps) => {
+  const [isOpen, setIsOpen] = useState(true);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<Message[]>([
     {
-      type: 'bot',
-      message: "Hi! I'm here to help with your electrical needs. Is this an emergency?",
+      id: "1",
+      text: initialMessage,
+      isUser: false,
       timestamp: new Date()
     }
   ]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const quickReplies = [
-    { text: "🚨 Yes, this is an emergency!", action: "emergency" },
-    { text: "📅 Schedule routine service", action: "schedule" },
-    { text: "💰 Get a quote", action: "quote" },
-    { text: "❓ Ask a question", action: "question" }
-  ];
+  const smartResponses = {
+    greeting: [
+      "Hello! Welcome to PowerPro Electric. How can I help you today?",
+      "Hi there! I'm your electrical assistant. What electrical service do you need?",
+      "Welcome! I'm here to help with all your electrical needs."
+    ],
+    emergency: [
+      `This sounds like an emergency! Please call us immediately at ${emergencyPhone} for urgent electrical issues.`,
+      `For electrical emergencies, please call ${emergencyPhone} right away. Our emergency team is standing by 24/7.`
+    ],
+    services: [
+      "We offer a full range of electrical services including wiring, panel upgrades, lighting installation, electrical repairs, and safety inspections. What specific service interests you?",
+      "Our expert electricians handle residential and commercial electrical work. We specialize in panel upgrades, rewiring, lighting design, and electrical troubleshooting. How can we help?"
+    ],
+    pricing: [
+      "Our pricing is competitive and transparent. We offer free estimates for most projects. Would you like to schedule a consultation to discuss your specific needs?",
+      "We provide upfront pricing with no hidden fees. Each project is unique, so I'd recommend a free estimate. Can I help you schedule one?"
+    ],
+    appointment: [
+      "I'd be happy to help you schedule an appointment! Our electricians are available Monday through Saturday. What type of electrical work do you need done?",
+      "Let's get you scheduled! We have openings this week. What electrical service do you need, and what's your preferred time?"
+    ],
+    default: [
+      "That's a great question! Our experienced electricians can definitely help with that. Would you like me to connect you with a specialist?",
+      "I understand your concern. Our team has extensive experience with all types of electrical work. Can you tell me more about your specific situation?",
+      "Thanks for reaching out! Our certified electricians are experts in handling these types of issues. Would you like to schedule a consultation?"
+    ]
+  };
 
-  const commonQuestions = [
-    {
-      question: "What are your service hours?",
-      answer: "Our regular hours are Mon-Fri 7AM-6PM, Saturday 8AM-4PM. Emergency service is available 24/7!"
-    },
-    {
-      question: "Do you provide free estimates?",
-      answer: "Yes! We provide free estimates for all non-emergency electrical work. Call (555) 123-4567 to schedule."
-    },
-    {
-      question: "Are you licensed and insured?",
-      answer: "Absolutely! We're fully licensed (#EL-12345), bonded, and insured for your protection."
-    },
-    {
-      question: "What areas do you serve?",
-      answer: "We serve the entire metropolitan area including Downtown, Westside, Northfield, Southbrook, and surrounding communities."
+  const getSmartResponse = (userMessage: string): string => {
+    const message = userMessage.toLowerCase();
+    
+    if (message.includes("emergency") || message.includes("urgent") || message.includes("sparks") || message.includes("burning smell")) {
+      return smartResponses.emergency[Math.floor(Math.random() * smartResponses.emergency.length)];
     }
+    
+    if (message.includes("hello") || message.includes("hi") || message.includes("hey")) {
+      return smartResponses.greeting[Math.floor(Math.random() * smartResponses.greeting.length)];
+    }
+    
+    if (message.includes("service") || message.includes("what do you do") || message.includes("help with")) {
+      return smartResponses.services[Math.floor(Math.random() * smartResponses.services.length)];
+    }
+    
+    if (message.includes("price") || message.includes("cost") || message.includes("how much")) {
+      return smartResponses.pricing[Math.floor(Math.random() * smartResponses.pricing.length)];
+    }
+    
+    if (message.includes("appointment") || message.includes("schedule") || message.includes("book")) {
+      return smartResponses.appointment[Math.floor(Math.random() * smartResponses.appointment.length)];
+    }
+    
+    return smartResponses.default[Math.floor(Math.random() * smartResponses.default.length)];
+  };
+
+  const simulateTyping = useCallback((userMessage: string) => {
+    setIsTyping(true);
+    
+    const response = getSmartResponse(userMessage);
+    const typingDuration = Math.min(response.length * 30, 3000);
+    
+    setTimeout(() => {
+      setIsTyping(false);
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        text: response,
+        isUser: false,
+        timestamp: new Date()
+      }]);
+    }, typingDuration);
+  }, []);
+
+  const handleSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    
+    if (input.trim() === "") return;
+    
+    const userMessage = input;
+    setMessages(prev => [...prev, {
+      id: Date.now().toString(),
+      text: userMessage,
+      isUser: true,
+      timestamp: new Date()
+    }]);
+    setInput("");
+    
+    simulateTyping(userMessage);
+  };
+
+  const quickActions = [
+    "Schedule an appointment",
+    "Get a quote",
+    "Emergency service",
+    "Panel upgrade info"
   ];
 
-  const handleQuickReply = (action: string, text: string) => {
-    // Add user message
-    const userMessage = {
-      type: 'user' as const,
-      message: text,
-      timestamp: new Date()
-    };
-    
-    setMessages(prev => [...prev, userMessage]);
-
-    // Add bot response based on action
-    setTimeout(() => {
-      let botResponse = '';
-      
-      switch (action) {
-        case 'emergency':
-          botResponse = "🚨 This is an emergency! Please call us immediately at (555) 123-4567. Our emergency team is standing by 24/7. What type of emergency are you experiencing?";
-          break;
-        case 'schedule':
-          botResponse = "I'd be happy to help you schedule service! What type of electrical work do you need? You can also call (555) 123-4567 or fill out our contact form for faster service.";
-          break;
-        case 'quote':
-          botResponse = "I can help you get a quote! For the most accurate estimate, please describe the electrical work you need or call (555) 123-4567 to speak with one of our electricians.";
-          break;
-        case 'question':
-          botResponse = "What would you like to know? I can answer questions about our services, pricing, or schedule an appointment for you.";
-          break;
-        default:
-          botResponse = "How can I help you today?";
-      }
-
-      const newBotMessage = {
-        type: 'bot' as const,
-        message: botResponse,
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, newBotMessage]);
-    }, 1000);
+  const handleQuickAction = (action: string) => {
+    setInput(action);
+    setTimeout(() => handleSubmit(), 100);
   };
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
 
-    const userMessage = {
-      type: 'user' as const,
-      message: inputMessage,
-      timestamp: new Date()
-    };
-    
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-
-    // Simple keyword-based responses
-    setTimeout(() => {
-      let botResponse = '';
-      const message = inputMessage.toLowerCase();
-      
-      if (message.includes('emergency') || message.includes('urgent')) {
-        botResponse = "🚨 For emergencies, please call (555) 123-4567 immediately! Our emergency team is available 24/7.";
-      } else if (message.includes('price') || message.includes('cost') || message.includes('quote')) {
-        botResponse = "For accurate pricing, I'd recommend calling (555) 123-4567 for a free estimate. Pricing varies based on the specific work needed.";
-      } else if (message.includes('hours') || message.includes('open')) {
-        botResponse = "We're open Mon-Fri 7AM-6PM, Saturday 8AM-4PM. Emergency service available 24/7! Call (555) 123-4567.";
-      } else if (message.includes('license') || message.includes('insured')) {
-        botResponse = "Yes! We're fully licensed (#EL-12345), bonded, and insured. All our electricians are certified professionals.";
-      } else {
-        botResponse = "Thanks for your message! For the best assistance, please call (555) 123-4567 to speak with one of our electricians, or you can schedule service through our contact form.";
-      }
-
-      const newBotMessage = {
-        type: 'bot' as const,
-        message: botResponse,
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, newBotMessage]);
-    }, 1000);
-  };
+  if (!isOpen) {
+    return (
+      <motion.button
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full shadow-2xl flex items-center justify-center text-white z-50 hover:shadow-gray-700/25"
+      >
+        <MessageCircle className="w-8 h-8" />
+      </motion.button>
+    );
+  }
 
   return (
-    <>
-      {/* Chat Button */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-all duration-200 hover:scale-110 z-50"
-        >
-          <MessageCircle className="h-6 w-6" />
-        </button>
-      )}
-
-      {/* Chat Window */}
-      {isOpen && (
-        <div className="fixed bottom-6 right-6 w-80 md:w-96 h-96 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col z-50">
-          {/* Header */}
-          <div className="bg-blue-600 text-white p-4 rounded-t-lg flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold">PowerPro Electric</h3>
-              <p className="text-blue-100 text-sm">How can we help you?</p>
-            </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:text-gray-200 transition-colors"
-            >
-              <X className="h-5 w-5" />
-            </button>
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 20, scale: 0.95 }}
+      className={`fixed bottom-6 right-6 w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-border flex flex-col z-50 overflow-hidden ${className}`}
+      style={{ height: isMinimized ? "auto" : "500px" }}
+    >
+      {/* Header */}
+      <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-4 flex items-center justify-between text-white">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+            <Sparkles className="w-6 h-6" />
           </div>
-
-          {/* Emergency Alert */}
-          <div className="bg-red-50 border-l-4 border-red-500 p-3">
-            <div className="flex items-center">
-              <AlertTriangle className="h-4 w-4 text-red-500 mr-2" />
-              <p className="text-red-700 text-sm font-medium">
-                Emergency? Call (555) 123-4567 now!
-              </p>
-            </div>
-          </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
-                    msg.type === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-800'
-                  }`}
-                >
-                  {msg.message}
-                </div>
-              </div>
-            ))}
-            
-            {/* Quick Replies (only show after initial message) */}
-            {messages.length === 1 && (
-              <div className="space-y-2">
-                {quickReplies.map((reply, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleQuickReply(reply.action, reply.text)}
-                    className="block w-full text-left p-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm transition-colors"
-                  >
-                    {reply.text}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Input */}
-          <div className="border-t p-3">
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="Type your message..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-              />
-              <button
-                onClick={handleSendMessage}
-                className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
-              >
-                <Send className="h-4 w-4" />
-              </button>
-            </div>
-            
-            {/* Quick Actions */}
-            <div className="flex space-x-2 mt-2">
-              <a
-                href="tel:+15551234567"
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs py-2 px-3 rounded-lg transition-colors flex items-center justify-center space-x-1"
-              >
-                <Phone className="h-3 w-3" />
-                <span>Call Now</span>
-              </a>
-              <a
-                href="/contact"
-                onClick={() => setIsOpen(false)}
-                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs py-2 px-3 rounded-lg transition-colors flex items-center justify-center space-x-1"
-              >
-                <Clock className="h-3 w-3" />
-                <span>Schedule</span>
-              </a>
-            </div>
+          <div>
+            <h3 className="font-semibold text-lg">{companyName}</h3>
+            <p className="text-gray-300 text-sm">How can we help you?</p>
           </div>
         </div>
-      )}
-    </>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setIsMinimized(!isMinimized)}
+            className="p-1 hover:bg-white/20 rounded transition-colors"
+          >
+            {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="p-1 hover:bg-white/20 rounded transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Emergency Banner */}
+      <div className="bg-red-950 border-b border-red-900 p-3">
+        <div className="flex items-center space-x-2 text-red-400">
+          <Phone className="w-4 h-4" />
+          <span className="text-sm font-medium">Emergency? Call {emergencyPhone} now!</span>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {!isMinimized && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            className="flex flex-col flex-1"
+          >
+            {/* Messages */}
+            <div className="flex-1 p-4 overflow-y-auto bg-background" style={{ maxHeight: "300px" }}>
+              <div className="space-y-4">
+                {messages.map((msg) => (
+                  <motion.div
+                    key={msg.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-[85%] p-3 rounded-2xl ${
+                        msg.isUser
+                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-tr-md"
+                          : "bg-card text-card-foreground rounded-tl-md shadow-sm border border-border"
+                      }`}
+                    >
+                      <p className="text-sm leading-relaxed">{msg.text}</p>
+                      <p className={`text-xs mt-1 ${msg.isUser ? "text-blue-100" : "text-muted-foreground"}`}>
+                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+                
+                <AnimatePresence>
+                  {isTyping && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="flex justify-start"
+                    >
+                      <div className="bg-card text-card-foreground rounded-2xl rounded-tl-md shadow-sm border border-border p-3">
+                        <div className="flex items-center space-x-2">
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce"></div>
+                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce delay-75"></div>
+                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce delay-150"></div>
+                          </div>
+                          <span className="text-xs text-muted-foreground">Typing...</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <div ref={messagesEndRef} />
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            {messages.length <= 1 && (
+              <div className="p-3 bg-background border-t border-border">
+                <div className="grid grid-cols-2 gap-2">
+                  {quickActions.map((action, index) => (
+                    <motion.button
+                      key={action}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      onClick={() => handleQuickAction(action)}
+                      className="p-2 text-xs bg-muted hover:bg-muted/80 rounded-lg border border-border transition-colors text-foreground"
+                    >
+                      {action}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Input */}
+            <form onSubmit={handleSubmit} className="p-4 bg-background border-t border-border">
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                  placeholder="Type your message..."
+                  className={`w-full bg-input border rounded-full py-3 pl-4 pr-12 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all ${
+                    isFocused ? "border-primary focus:ring-primary/20 bg-background" : "border-border"
+                  }`}
+                />
+                <button
+                  type="submit"
+                  disabled={input.trim() === "" || isTyping}
+                  className={`absolute right-2 rounded-full p-2 transition-all ${
+                    input.trim() === "" || isTyping
+                      ? "text-muted-foreground bg-muted cursor-not-allowed"
+                      : "text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
+                  }`}
+                >
+                  {isTyping ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
-export default ChatBot;
+export default function ChatBot() {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <MillionDollarChatbot />
+    </div>
+  );
+}

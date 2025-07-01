@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Star, Quote, Phone, CheckCircle } from 'lucide-react';
 
@@ -95,217 +94,219 @@ const Testimonials = () => {
   ];
 
   return (
-    <div className="pt-16">
+    <div className="min-h-screen bg-[#111111] text-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-16">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-black via-blue-950/20 to-black relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Customer Reviews & Testimonials
-          </h1>
-          <p className="text-xl text-blue-200 mb-8">
-            See what our satisfied customers have to say about our electrical services
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.15] backdrop-blur-sm mb-6">
+            <Star className="h-4 w-4 text-yellow-300 animate-spin-slow" />
+            <span className="text-sm font-medium text-white/80">Customer Reviews & Testimonials</span>
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+          </div>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">What Our Customers Say</h1>
+          <p className="text-xl sm:text-2xl text-white/60 max-w-3xl mx-auto leading-relaxed mb-10">
+            See what our satisfied customers have to say about our electrical services.
           </p>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="flex flex-wrap justify-center gap-6 mb-10 md:mb-16">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-blue-200 text-sm md:text-base">
-                  {stat.label}
-                </div>
+              <div key={index} className="flex flex-col items-center justify-center w-40 h-32 bg-white/[0.05] backdrop-blur-xl rounded-2xl border border-white/[0.15] group hover:bg-white/[0.08] transition-all shadow-md">
+                <div className="text-3xl font-bold text-yellow-300 mb-1">{stat.number}</div>
+                <div className="text-white/60 text-sm">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Rating Overview */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-8 w-8 text-yellow-400 fill-current" />
-                ))}
+      {/* Page content styled to match Premium UI */}
+      <div className="max-w-5xl mx-auto px-4 py-24">
+        
+        {/* Rating Overview */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center space-x-2 mb-4">
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-8 w-8 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <span className="text-3xl font-bold text-gray-900">5.0</span>
               </div>
-              <span className="text-3xl font-bold text-gray-900">5.0</span>
+              <p className="text-lg text-gray-600">
+                Based on 500+ verified customer reviews across Google, Yelp, and Facebook
+              </p>
             </div>
-            <p className="text-lg text-gray-600">
-              Based on 500+ verified customer reviews across Google, Yelp, and Facebook
-            </p>
-          </div>
 
-          <div className="bg-gray-50 rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              What Makes Us Different
-            </h2>
+            <div className="bg-gray-50 rounded-lg p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+                What Makes Us Different
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Reliable Service</h3>
+                  <p className="text-gray-600 text-sm">
+                    We show up on time and complete work as promised, every single time.
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-green-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Star className="h-8 w-8 text-green-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Quality Workmanship</h3>
+                  <p className="text-gray-600 text-sm">
+                    Licensed professionals using quality materials and proven techniques.
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-yellow-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Phone className="h-8 w-8 text-yellow-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">24/7 Availability</h3>
+                  <p className="text-gray-600 text-sm">
+                    Emergency electrical service available around the clock when you need it.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Customer Testimonials */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Real Reviews from Real Customers
+              </h2>
+              <p className="text-lg text-gray-600">
+                These are just a few of the hundreds of 5-star reviews we've received
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-lg p-6 relative">
+                  {/* Quote Icon */}
+                  <Quote className="h-8 w-8 text-blue-600 opacity-20 absolute top-4 right-4" />
+                  
+                  {/* Rating */}
+                  <div className="flex items-center mb-4">
+                    <div className="flex">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                    {testimonial.verified && (
+                      <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                        Verified
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Review Text */}
+                  <p className="text-gray-700 mb-4 italic">
+                    "{testimonial.text}"
+                  </p>
+
+                  {/* Customer Info */}
+                  <div className="border-t pt-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                        <p className="text-sm text-gray-600">{testimonial.location}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-blue-600">{testimonial.service}</p>
+                        <p className="text-xs text-gray-500">{testimonial.date}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Review Platforms */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Find Us on Review Platforms
+              </h2>
+              <p className="text-lg text-gray-600">
+                We're proud of our reputation across all major review platforms
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="h-8 w-8 text-blue-600" />
+              <div className="text-center bg-gray-50 rounded-lg p-8">
+                <div className="text-4xl font-bold text-gray-900 mb-2">5.0</div>
+                <div className="flex justify-center mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Reliable Service</h3>
-                <p className="text-gray-600 text-sm">
-                  We show up on time and complete work as promised, every single time.
-                </p>
+                <p className="font-semibold text-gray-900">Google Reviews</p>
+                <p className="text-gray-600 text-sm">200+ reviews</p>
               </div>
-              <div className="text-center">
-                <div className="bg-green-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Star className="h-8 w-8 text-green-600" />
+
+              <div className="text-center bg-gray-50 rounded-lg p-8">
+                <div className="text-4xl font-bold text-gray-900 mb-2">5.0</div>
+                <div className="flex justify-center mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Quality Workmanship</h3>
-                <p className="text-gray-600 text-sm">
-                  Licensed professionals using quality materials and proven techniques.
-                </p>
+                <p className="font-semibold text-gray-900">Yelp</p>
+                <p className="text-gray-600 text-sm">150+ reviews</p>
               </div>
-              <div className="text-center">
-                <div className="bg-yellow-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Phone className="h-8 w-8 text-yellow-600" />
+
+              <div className="text-center bg-gray-50 rounded-lg p-8">
+                <div className="text-4xl font-bold text-gray-900 mb-2">5.0</div>
+                <div className="flex justify-center mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">24/7 Availability</h3>
-                <p className="text-gray-600 text-sm">
-                  Emergency electrical service available around the clock when you need it.
-                </p>
+                <p className="font-semibold text-gray-900">Facebook</p>
+                <p className="text-gray-600 text-sm">150+ reviews</p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Customer Testimonials */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Real Reviews from Real Customers
+        {/* CTA Section */}
+        <section className="py-16 bg-blue-900 text-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Ready to Experience 5-Star Service?
             </h2>
-            <p className="text-lg text-gray-600">
-              These are just a few of the hundreds of 5-star reviews we've received
+            <p className="text-xl text-blue-200 mb-8">
+              Join thousands of satisfied customers who trust PowerPro Electric
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg p-6 relative">
-                {/* Quote Icon */}
-                <Quote className="h-8 w-8 text-blue-600 opacity-20 absolute top-4 right-4" />
-                
-                {/* Rating */}
-                <div className="flex items-center mb-4">
-                  <div className="flex">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  {testimonial.verified && (
-                    <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                      Verified
-                    </span>
-                  )}
-                </div>
-
-                {/* Review Text */}
-                <p className="text-gray-700 mb-4 italic">
-                  "{testimonial.text}"
-                </p>
-
-                {/* Customer Info */}
-                <div className="border-t pt-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                      <p className="text-sm text-gray-600">{testimonial.location}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-blue-600">{testimonial.service}</p>
-                      <p className="text-xs text-gray-500">{testimonial.date}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Review Platforms */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Find Us on Review Platforms
-            </h2>
-            <p className="text-lg text-gray-600">
-              We're proud of our reputation across all major review platforms
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center bg-gray-50 rounded-lg p-8">
-              <div className="text-4xl font-bold text-gray-900 mb-2">5.0</div>
-              <div className="flex justify-center mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="font-semibold text-gray-900">Google Reviews</p>
-              <p className="text-gray-600 text-sm">200+ reviews</p>
-            </div>
-
-            <div className="text-center bg-gray-50 rounded-lg p-8">
-              <div className="text-4xl font-bold text-gray-900 mb-2">5.0</div>
-              <div className="flex justify-center mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="font-semibold text-gray-900">Yelp</p>
-              <p className="text-gray-600 text-sm">150+ reviews</p>
-            </div>
-
-            <div className="text-center bg-gray-50 rounded-lg p-8">
-              <div className="text-4xl font-bold text-gray-900 mb-2">5.0</div>
-              <div className="flex justify-center mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="font-semibold text-gray-900">Facebook</p>
-              <p className="text-gray-600 text-sm">150+ reviews</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="tel:+15551234567"
+                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
+              >
+                <Phone className="h-5 w-5" />
+                <span>Call Now: (555) 123-4567</span>
+              </a>
+              <Link
+                to="/contact"
+                className="bg-white hover:bg-gray-100 text-blue-900 px-8 py-3 rounded-lg font-semibold transition-colors"
+              >
+                Schedule a Service Call
+              </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-blue-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Experience 5-Star Service?
-          </h2>
-          <p className="text-xl text-blue-200 mb-8">
-            Join thousands of satisfied customers who trust PowerPro Electric
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="tel:+15551234567"
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
-            >
-              <Phone className="h-5 w-5" />
-              <span>Call Now: (555) 123-4567</span>
-            </a>
-            <Link
-              to="/contact"
-              className="bg-white hover:bg-gray-100 text-blue-900 px-8 py-3 rounded-lg font-semibold transition-colors"
-            >
-              Schedule a Service Call
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 };
