@@ -408,7 +408,7 @@ const MillionDollarChatbot = ({
 // --- MAIN COMPONENT ---
 export default function ChatBot() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="bg-background text-foreground">
       <MillionDollarChatbot />
     </div>
   );

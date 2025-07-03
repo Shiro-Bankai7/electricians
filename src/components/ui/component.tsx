@@ -281,7 +281,7 @@ const PremiumElectricalContact: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#111111] text-white flex flex-col">
+    <div className="bg-[#111111] text-white flex flex-col">
       {/* Header */}
       <motion.header
         variants={headerVariants}
