@@ -1,16 +1,9 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Phone, Star, Shield, Clock, CheckCircle, Zap, 
   Home as HomeIcon, Building, Lightbulb, AlertTriangle 
 } from 'lucide-react';
 
-const featuredLogos = [
-  { src: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/BBB-logo.png', alt: 'BBB Accredited', url: 'https://www.bbb.org/' },
-  { src: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Angi_logo.svg', alt: 'Angi', url: 'https://www.angi.com/' },
-  { src: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/HomeAdvisor_logo.svg', alt: 'HomeAdvisor', url: 'https://www.homeadvisor.com/' },
-  { src: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/NFPA_logo.svg', alt: 'NFPA', url: 'https://www.nfpa.org/' },
-];
 
 const Home = () => {
   const services = [
@@ -61,11 +54,46 @@ const Home = () => {
     }
   ];
 
+  const allServiceTypes = [
+    { icon: <AlertTriangle className="h-6 w-6 text-red-500" />, name: "Emergency Repairs", link: "/services#emergency" },
+    { icon: <HomeIcon className="h-6 w-6 text-blue-500" />, name: "Residential Services", link: "/services#residential" },
+    { icon: <Building className="h-6 w-6 text-green-500" />, name: "Commercial Services", link: "/services#commercial" },
+    { icon: <Lightbulb className="h-6 w-6 text-yellow-500" />, name: "Installations", link: "/services#installations" },
+    // Add more if the catalog expands
+  ];
+
   return (
     <div className="min-h-screen bg-[#111111] text-white">
+      {/* Service Types Quicklinks (Product Types) */}
+      <section className="py-6 bg-[#181818] border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-4 justify-center items-center overflow-x-auto">
+            {allServiceTypes.map((type, idx) => (
+              <Link
+                key={type.name}
+                to={type.link}
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors whitespace-nowrap shadow-sm border border-white/10"
+                aria-label={type.name}
+              >
+                {type.icon}
+                <span>{type.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-gradient-to-br from-black via-blue-950/20 to-black relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {/* Hero Background Image */}
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo1L8hbd1H_yArL9HF4pRD6CfZ_wiWub_wgg&s"
+          alt="Professional electrician working on a modern home electrical panel"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-60 pointer-events-none select-none z-0"
+          style={{maxHeight: '600px'}}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90 z-10" aria-hidden="true"></div>
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.15] backdrop-blur-sm mb-6">
             <Zap className="h-4 w-4 text-yellow-300 animate-spin-slow" />
             <span className="text-sm font-medium text-white/80">PowerPro Electric</span>
@@ -234,7 +262,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary-dark text-white">
+      <section className="py-8 bg-primary-dark text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Need Electrical Work Done Right?

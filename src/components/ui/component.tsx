@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { 
   Mail, 
@@ -18,7 +18,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  ExternalLink
 } from 'lucide-react';
 
 function cn(...classes: (string | undefined | null | boolean)[]): string {
