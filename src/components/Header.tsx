@@ -148,14 +148,6 @@ const Header = () => {
                 {item.name}
               </Link>
             ))}
-            <div className="pt-4 pb-2 px-3">
-              <a
-                href="tel:+15551234567"
-                className="block w-full bg-yellow-400 hover:bg-blue-700 hover:text-yellow-400 text-blue-900 px-6 py-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400 border-2 border-blue-400 glow"
-              >
-                Schedule a Service Call
-              </a>
-            </div>
           </div>
         </div>
       )}

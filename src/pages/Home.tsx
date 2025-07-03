@@ -1,74 +1,17 @@
 import { Link } from 'react-router-dom';
-import { 
-  Phone, Star, Shield, Clock, CheckCircle, Zap, 
-  Home as HomeIcon, Building, Lightbulb, AlertTriangle 
-} from 'lucide-react';
-
+import { Phone, Star, Shield, Clock, Zap } from 'lucide-react';
+import { services, testimonials, allServiceTypes } from '../data.tsx';
+import ServicesSection from '../components/ServicesSection';
+import TestimonialsSection from '../components/TestimonialsSection';
 
 const Home = () => {
-  const services = [
-    {
-      icon: <AlertTriangle className="h-8 w-8 text-red-500" />,
-      title: "Emergency Repairs",
-      description: "24/7 emergency electrical repairs when you need us most",
-      features: ["Power outages", "Electrical fires", "Sparking outlets", "Circuit breaker issues"]
-    },
-    {
-      icon: <HomeIcon className="h-8 w-8 text-blue-500" />,
-      title: "Residential Services",
-      description: "Complete electrical solutions for your home",
-      features: ["Outlet installation", "Panel upgrades", "Ceiling fans", "Home rewiring"]
-    },
-    {
-      icon: <Building className="h-8 w-8 text-green-500" />,
-      title: "Commercial Services",
-      description: "Professional electrical work for businesses",
-      features: ["Office lighting", "Safety inspections", "Code compliance", "Equipment installation"]
-    },
-    {
-      icon: <Lightbulb className="h-8 w-8 text-yellow-500" />,
-      title: "Installations",
-      description: "Expert installation of electrical systems and fixtures",
-      features: ["LED lighting", "Smart switches", "EV chargers", "Security systems"]
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      rating: 5,
-      text: "PowerPro Electric saved the day! Our power went out during a storm and they came out immediately to fix it. Professional and reliable!",
-      service: "Emergency Repair"
-    },
-    {
-      name: "Mike Chen",
-      rating: 5,
-      text: "Excellent work on our kitchen renovation. They installed new outlets and under-cabinet lighting perfectly. Clean work and fair pricing.",
-      service: "Residential Installation"
-    },
-    {
-      name: "Lisa Martinez",
-      rating: 5,
-      text: "I was impressed with their professionalism. They explained everything clearly and the work was completed on time and on budget.",
-      service: "Panel Upgrade"
-    }
-  ];
-
-  const allServiceTypes = [
-    { icon: <AlertTriangle className="h-6 w-6 text-red-500" />, name: "Emergency Repairs", link: "/services#emergency" },
-    { icon: <HomeIcon className="h-6 w-6 text-blue-500" />, name: "Residential Services", link: "/services#residential" },
-    { icon: <Building className="h-6 w-6 text-green-500" />, name: "Commercial Services", link: "/services#commercial" },
-    { icon: <Lightbulb className="h-6 w-6 text-yellow-500" />, name: "Installations", link: "/services#installations" },
-    // Add more if the catalog expands
-  ];
-
   return (
     <div className="min-h-screen bg-[#111111] text-white">
       {/* Service Types Quicklinks (Product Types) */}
       <section className="py-6 bg-[#181818] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-4 justify-center items-center overflow-x-auto">
-            {allServiceTypes.map((type, idx) => (
+            {allServiceTypes.map((type: { name: string; link: string; icon: React.ReactNode }) => (
               <Link
                 key={type.name}
                 to={type.link}
@@ -91,6 +34,7 @@ const Home = () => {
           alt="Professional electrician working on a modern home electrical panel"
           className="absolute inset-0 w-full h-full object-cover object-center opacity-60 pointer-events-none select-none z-0"
           style={{maxHeight: '600px'}}
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90 z-10" aria-hidden="true"></div>
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -135,50 +79,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Services Overview */}
-      <section className="py-16 bg-neutral-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Professional Electrical Services
-            </h2>
-            <p className="text-lg text-gray-600">
-              From emergency repairs to complete installations, we've got you covered
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow transform hover:-translate-y-2 duration-300 animate-fade-in-up">
-                <div className="flex items-center justify-center mb-4">
-                  {service.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-neutral-dark mb-3 text-center">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 mb-4 text-center">
-                  {service.description}
-                </p>
-                <ul className="space-y-2">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center space-x-2 text-sm text-neutral-dark">
-                      <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link
-              to="/services"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors shadow-lg animate-fade-in-up"
-            >
-              View All Services
-            </Link>
-          </div>
-        </div>
-      </section>
+      <ServicesSection services={services} />
 
       {/* Why Choose Us */}
       <section className="py-16 bg-white">
@@ -223,43 +124,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Customer Testimonials */}
-      <section className="py-16 bg-neutral-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What Our Customers Say
-            </h2>
-            <p className="text-lg text-gray-600">
-              Don't just take our word for it - hear from our satisfied customers
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300">
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">"{testimonial.text}"</p>
-                <div>
-                  <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.service}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link
-              to="/testimonials"
-              className="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-semibold transition-colors shadow-md animate-fade-in-up"
-            >
-              Read More Reviews
-            </Link>
-          </div>
-        </div>
-      </section>
+      <TestimonialsSection testimonials={testimonials} />
 
       {/* CTA Section */}
       <section className="py-8 bg-primary-dark text-white">
